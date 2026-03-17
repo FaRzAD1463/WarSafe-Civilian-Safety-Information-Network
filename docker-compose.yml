@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend/WarSafe.API
+    ports:
+      - "5000:80"
+    depends_on:
+      - db
+
+  ai:
+    build: ./ai-service
+    ports:
+      - "8000:8000"
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: warsafe
+    ports:
+      - "5432:5432"
