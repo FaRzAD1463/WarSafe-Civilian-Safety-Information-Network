@@ -1,27 +1,21 @@
+using Microsoft.AspNetCore.Mvc;
+using WarSafe.Application.Interfaces;
+
 [ApiController]
 [Route("api/shelters")]
 public class SheltersController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IShelterService _service;
 
-    public SheltersController(AppDbContext context)
+    public SheltersController(IShelterService service)
     {
-        _context = context;
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Add(Shelter shelter)
-    {
-        shelter.Id = Guid.NewGuid();
-        _context.Add(shelter);
-        await _context.SaveChangesAsync();
-
-        return Ok(shelter);
+        _service = service;
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public async Task<IActionResult> GetShelters()
     {
-        return Ok(_context.Set<Shelter>().ToList());
+        var shelters = await _service.GetShelters();
+        return Ok(shelters);
     }
 }
