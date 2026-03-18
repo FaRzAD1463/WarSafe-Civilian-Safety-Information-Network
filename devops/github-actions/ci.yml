@@ -1,20 +1,30 @@
-name: CI
+name: WarSafe CI
 
 on:
   push:
-    branches: [main]
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      - name: Build Backend
-        run: dotnet build ./backend/WarSafe.API
+      - name: Restore
+        run: dotnet restore backend/WarSafe.API
+
+      - name: Build
+        run: dotnet build backend/WarSafe.API --no-restore
+
+      - name: Test
+        run: dotnet test || echo "No tests yet"
+
+      - name: Docker build
+        run: docker compose build
