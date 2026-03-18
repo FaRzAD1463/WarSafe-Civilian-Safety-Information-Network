@@ -1,29 +1,22 @@
 using WarSafe.Domain.Entities;
-using WarSafe.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+using WarSafe.Infrastructure.Repositories;
 
 public class ReportService : IReportService
 {
-    private readonly AppDbContext _context;
+    private readonly ReportRepository _repo;
 
-    public ReportService(AppDbContext context)
+    public ReportService(ReportRepository repo)
     {
-        _context = context;
+        _repo = repo;
     }
 
-    public async Task<Report> CreateAsync(Report report)
+    public async Task<List<Report>> GetAll()
     {
-        report.Id = Guid.NewGuid();
-        report.CreatedAt = DateTime.UtcNow;
-
-        _context.Reports.Add(report);
-        await _context.SaveChangesAsync();
-
-        return report;
+        return await _repo.GetAll();
     }
 
-    public async Task<List<Report>> GetAllAsync()
+    public async Task<Report> Create(Report report)
     {
-        return await _context.Reports.ToListAsync();
+        return await _repo.Create(report);
     }
 }
