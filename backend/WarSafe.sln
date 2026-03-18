@@ -1,0 +1,26 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+
+Project("{GUID}") = "WarSafe.API", "WarSafe.API\WarSafe.API.csproj", "{GUID1}"
+EndProject
+
+Project("{GUID}") = "WarSafe.Application", "WarSafe.Application\WarSafe.Application.csproj", "{GUID2}"
+EndProject
+
+Project("{GUID}") = "WarSafe.Domain", "WarSafe.Domain\WarSafe.Domain.csproj", "{GUID3}"
+EndProject
+
+Project("{GUID}") = "WarSafe.Infrastructure", "WarSafe.Infrastructure\WarSafe.Infrastructure.csproj", "{GUID4}"
+EndProject
+
+Global
+EndGlobal
+
+
+*****************************************
+#after installing packages do this - dotnet new sln -n WarSafe
+dotnet sln add WarSafe.API
+dotnet sln add WarSafe.Application
+dotnet sln add WarSafe.Domain
+dotnet sln add WarSafe.Infrastructure
+*****************************************
