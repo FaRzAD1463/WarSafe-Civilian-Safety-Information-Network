@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
-import '../../core/services/api_service.dart';
-import '../reports/report_screen.dart';
+import '../../core/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final api = ApiService();
+class _LoginState extends State<LoginScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
 
   void login() async {
-    await api.login(email.text, password.text);
+    try {
+      await AuthService.login(email.text, password.text);
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => ReportScreen()),
-    );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Login success")));
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Login failed")));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("WarSafe Login")),
+      appBar: AppBar(title: const Text("Login")),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(controller: email, decoration: InputDecoration(labelText: "Email")),
-            TextField(controller: password, decoration: InputDecoration(labelText: "Password")),
-            SizedBox(height: 20),
-            ElevatedButton(onPressed: login, child: Text("Login"))
+            TextField(controller: email, decoration: const InputDecoration(labelText: "Email")),
+            TextField(controller: password, obscureText: true, decoration: const InputDecoration(labelText: "Password")),
+            ElevatedButton(onPressed: login, child: const Text("Login"))
           ],
         ),
       ),
