@@ -2,28 +2,29 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String baseUrl = "http://10.0.2.2:5000/api";
+  static const String baseUrl = "http://10.0.2.2:5000/api";
 
-  Future<List<dynamic>> getReports() async {
-    final res = await http.get(Uri.parse("$baseUrl/reports"));
-    return jsonDecode(res.body);
+  static Future<dynamic> get(String endpoint) async {
+    final res = await http.get(Uri.parse("$baseUrl/$endpoint"));
+
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    } else {
+      throw Exception("API Error");
+    }
   }
 
-  Future<void> createReport(Map data) async {
-    await http.post(
-      Uri.parse("$baseUrl/reports"),
+  static Future<dynamic> post(String endpoint, Map data) async {
+    final res = await http.post(
+      Uri.parse("$baseUrl/$endpoint"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(data),
     );
-  }
 
-  Future<String> login(String email, String password) async {
-    final res = await http.post(
-      Uri.parse("$baseUrl/auth/login"),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"email": email, "password": password}),
-    );
-
-    return res.body;
+    if (res.statusCode == 200) {
+      return jsonDecode(res.body);
+    } else {
+      throw Exception("API Error");
+    }
   }
 }
