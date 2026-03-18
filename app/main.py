@@ -1,16 +1,13 @@
 from fastapi import FastAPI
-from sklearn.cluster import DBSCAN
 from app.routes.clustering import router
-import numpy as np
 
-app = FastAPI()
-app.include_router(router, prefix="/cluster")
+app = FastAPI(
+    title="WarSafe AI Service",
+    version="1.0.0"
+)
 
-@app.post("/cluster")
-def cluster(data: list):
-    coords = np.array(data)
+app.include_router(router, prefix="/cluster", tags=["Clustering"])
 
-    model = DBSCAN(eps=0.01, min_samples=2)
-    labels = model.fit_predict(coords)
-
-    return {"clusters": labels.tolist()}
+@app.get("/")
+def root():
+    return {"message": "WarSafe AI Service Running"}
