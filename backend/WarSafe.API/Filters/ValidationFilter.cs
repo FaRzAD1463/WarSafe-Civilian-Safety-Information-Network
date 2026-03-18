@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 public class ValidationFilter : IActionFilter
@@ -6,7 +5,7 @@ public class ValidationFilter : IActionFilter
     public void OnActionExecuting(ActionExecutingContext context)
     {
         if (!context.ModelState.IsValid)
-            context.Result = new BadRequestObjectResult(context.ModelState);
+            throw new Exception("Invalid request");
     }
 
     public void OnActionExecuted(ActionExecutedContext context) { }
