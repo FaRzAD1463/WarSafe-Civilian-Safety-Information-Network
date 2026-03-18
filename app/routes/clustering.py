@@ -1,11 +1,10 @@
 from fastapi import APIRouter
-from sklearn.cluster import DBSCAN
-import numpy as np
+from app.schemas.report_schema import ClusterRequest, ClusterResponse
+from app.services.clustering_service import ClusteringService
 
 router = APIRouter()
 
-@router.post("/")
-def cluster(data: list):
-    coords = np.array(data)
-    labels = DBSCAN(eps=0.01).fit_predict(coords)
-    return {"clusters": labels.tolist()}
+@router.post("/", response_model=ClusterResponse)
+def cluster(data: ClusterRequest):
+    clusters = ClusteringService.run(data.points)
+    return {"clusters": clusters}
