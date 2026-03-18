@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
-import 'features/auth/login_screen.dart';
+import 'features/map/map_screen.dart';
 
 void main() {
-  runApp(WarSafeApp());
+  runApp(const WarSafeApp());
 }
 
 class WarSafeApp extends StatelessWidget {
+  const WarSafeApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'WarSafe',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      theme: ThemeData(primarySwatch: Colors.red),
+      home: const MapScreen(),
     );
   }
 }
+
+
