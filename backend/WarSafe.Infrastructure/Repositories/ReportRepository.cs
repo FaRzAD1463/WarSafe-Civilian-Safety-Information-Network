@@ -1,22 +1,25 @@
 using WarSafe.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 public class ReportRepository
 {
-    private readonly AppDbContext _context;
+    private readonly AppDbContext _db;
 
-    public ReportRepository(AppDbContext context)
+    public ReportRepository(AppDbContext db)
     {
-        _context = context;
+        _db = db;
     }
 
-    public async Task Add(Report report)
+    public async Task<List<Report>> GetAll()
     {
-        _context.Reports.Add(report);
-        await _context.SaveChangesAsync();
+        return await _db.Reports.ToListAsync();
     }
 
-    public List<Report> GetAll()
+    public async Task<Report> Create(Report report)
     {
-        return _context.Reports.ToList();
+        report.Id = Guid.NewGuid();
+        _db.Reports.Add(report);
+        await _db.SaveChangesAsync();
+        return report;
     }
 }
