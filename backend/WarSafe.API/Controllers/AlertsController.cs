@@ -1,29 +1,21 @@
+using Microsoft.AspNetCore.Mvc;
+using WarSafe.Application.Interfaces;
+
 [ApiController]
 [Route("api/alerts")]
 public class AlertsController : ControllerBase
 {
-    private readonly AppDbContext _context;
+    private readonly IAlertService _service;
 
-    public AlertsController(AppDbContext context)
+    public AlertsController(IAlertService service)
     {
-        _context = context;
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create(Alert alert)
-    {
-        alert.Id = Guid.NewGuid();
-        alert.CreatedAt = DateTime.UtcNow;
-
-        _context.Add(alert);
-        await _context.SaveChangesAsync();
-
-        return Ok(alert);
+        _service = service;
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public async Task<IActionResult> GetAlerts()
     {
-        return Ok(_context.Set<Alert>().ToList());
+        var alerts = await _service.GetAlerts();
+        return Ok(alerts);
     }
 }
