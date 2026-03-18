@@ -11,14 +11,11 @@ public class AuthController : ControllerBase
         _auth = auth;
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register(string email, string password)
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginDto dto)
     {
-        return Ok(await _auth.Register(email, password));
-    }
+        var token = await _auth.Login(dto.Email, dto.Password);
 
-   [HttpPost("login")]
-public async Task<IActionResult> Login(LoginDto dto)
-{
-    return Ok(await _auth.Login(dto.Email, dto.Password));
+        return Ok(token);
+    }
 }
