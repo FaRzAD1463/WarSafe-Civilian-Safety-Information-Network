@@ -1,23 +1,50 @@
-version: '3.8'
+version: "3.9"
 
 services:
-  backend:
-    build: ./backend/WarSafe.API
+  postgres:
+    image: postgres:15
+    container_name: warsafe_db
+    restart: always
+    environment:
+      POSTGRES_DB: warsafe
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "5000:80"
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build:
+      context: .
+      dockerfile: devops/docker/backend.Dockerfile
+    container_name: warsafe_backend
     depends_on:
-      - db
+      - postgres
+    environment:
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=warsafe;Username=postgres;Password=postgres
+    ports:
+      - "5000:5000"
 
   ai:
-    build: ./ai-service
+    build:
+      context: .
+      dockerfile: devops/docker/ai.Dockerfile
+    container_name: warsafe_ai
     ports:
       - "8000:8000"
 
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: warsafe
+  nginx:
+    image: nginx:latest
+    container_name: warsafe_nginx
     ports:
-      - "5432:5432"
+      - "80:80"
+    volumes:
+      - ./devops/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+      - ai
+
+volumes:
+  db_data:
