@@ -3,56 +3,38 @@ import '../../core/services/api_service.dart';
 import 'report_model.dart';
 
 class ReportScreen extends StatefulWidget {
+  const ReportScreen({super.key});
+
   @override
-  _ReportScreenState createState() => _ReportScreenState();
+  State<ReportScreen> createState() => _ReportState();
 }
 
-class _ReportScreenState extends State<ReportScreen> {
-  final api = ApiService();
-  List<Report> reports = [];
+class _ReportState extends State<ReportScreen> {
+  final desc = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    loadReports();
-  }
+  void submit() async {
+    final report = Report(
+      type: "incident",
+      description: desc.text,
+      lat: 23.8,
+      lng: 90.4,
+    );
 
-  void loadReports() async {
-    final data = await api.getReports();
-    setState(() {
-      reports = data.map((e) => Report.fromJson(e)).toList();
-    });
-  }
+    await ApiService.post("reports", report.toJson());
 
-  void sendReport() async {
-    await api.createReport({
-      "type": "danger",
-      "description": "Explosion nearby",
-      "latitude": 31.5,
-      "longitude": 34.4,
-      "urgency": "high"
-    });
-
-    loadReports();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text("Reported")));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Reports"),
-        actions: [
-          IconButton(onPressed: sendReport, icon: Icon(Icons.add))
+      appBar: AppBar(title: const Text("Report")),
+      body: Column(
+        children: [
+          TextField(controller: desc),
+          ElevatedButton(onPressed: submit, child: const Text("Send"))
         ],
-      ),
-      body: ListView.builder(
-        itemCount: reports.length,
-        itemBuilder: (_, i) {
-          return ListTile(
-            title: Text(reports[i].type),
-            subtitle: Text(reports[i].description),
-          );
-        },
       ),
     );
   }
