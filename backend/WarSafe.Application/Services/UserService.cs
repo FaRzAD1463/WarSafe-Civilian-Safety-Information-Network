@@ -1,14 +1,17 @@
+using WarSafe.Domain.Entities;
+using WarSafe.Infrastructure.Repositories;
+
 public class UserService : IUserService
 {
-    private readonly AppDbContext _context;
+    private readonly UserRepository _repo;
 
-    public UserService(AppDbContext context)
+    public UserService(UserRepository repo)
     {
-        _context = context;
+        _repo = repo;
     }
 
     public List<User> GetAll()
     {
-        return _context.Users.ToList();
+        return _repo.GetAll();
     }
 }
