@@ -8,6 +8,8 @@ public class AuthService : IAuthService
 {
     private readonly AppDbContext _context;
     private readonly IConfiguration _config;
+    private readonly UserRepository _repo;
+    private readonly JwtService _jwt;
 
     public AuthService(AppDbContext context, IConfiguration config)
     {
@@ -30,14 +32,17 @@ public class AuthService : IAuthService
         return GenerateToken(user);
     }
 
-    public async Task<string> Login(string email, string password)
+     public async Task<string> Login(string email, string password)
     {
-        var user = _context.Users.FirstOrDefault(x => x.Email == email);
+        var user = await _repo.GetByEmail(email);
 
-        if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
-            throw new Exception("Invalid credentials");
+        if (user == null)
+            throw new Exception("User not found");
 
-        return GenerateToken(user);
+        if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            throw new Exception("Invalid password");
+
+        return _jwt.Generate(user);
     }
 
     private string GenerateToken(User user)
