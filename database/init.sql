@@ -11,3 +11,10 @@ CREATE TABLE IF NOT EXISTS "Reports" (
     "Latitude" DOUBLE PRECISION,
     "Longitude" DOUBLE PRECISION
 );
+
+CREATE TABLE "Media" (
+    "Id" UUID PRIMARY KEY,
+    "FilePath" TEXT,
+    "Status" TEXT,
+    "CreatedAt" TIMESTAMP
+);
