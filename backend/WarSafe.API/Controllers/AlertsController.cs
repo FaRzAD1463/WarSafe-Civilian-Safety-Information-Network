@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using WarSafe.Application.Interfaces;
 
+
+
 [ApiController]
 [Route("api/alerts")]
 public class AlertsController : ControllerBase
