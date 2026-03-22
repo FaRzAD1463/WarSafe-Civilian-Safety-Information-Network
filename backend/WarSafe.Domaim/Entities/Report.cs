@@ -1,7 +1,5 @@
 namespace WarSafe.Domain.Entities;
-
 using WarSafe.Domain.Enums;
-
 public class Report
 {
     public Guid Id { get; set; }
