@@ -1,5 +1,4 @@
 name: WarSafe CI
-
 on:
   push:
     branches: [ "main" ]
