@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "Setting up WarSafe..."
-
 docker compose up -d --build
 
 echo "System running:"
