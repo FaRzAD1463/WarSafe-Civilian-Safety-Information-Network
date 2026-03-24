@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS "Users" (
     "Email" TEXT NOT NULL,
     "PasswordHash" TEXT NOT NULL
 );
-
 CREATE TABLE IF NOT EXISTS "Reports" (
     "Id" UUID PRIMARY KEY,
     "Type" TEXT,
@@ -11,7 +10,6 @@ CREATE TABLE IF NOT EXISTS "Reports" (
     "Latitude" DOUBLE PRECISION,
     "Longitude" DOUBLE PRECISION
 );
-
 CREATE TABLE "Media" (
     "Id" UUID PRIMARY KEY,
     "FilePath" TEXT,
