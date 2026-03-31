@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
+using WarSafe.Application.Interfaces;
+
+
 [ApiController]
 [Route("api/users")]
 public class UsersController : ControllerBase
