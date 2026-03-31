@@ -17,10 +17,10 @@ class _LoginState extends State<LoginScreen> {
       await AuthService.login(email.text, password.text);
 
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Login success")));
+          .showSnackBar(const SnackBar(content: Text("Login success,get in ya brat")));
     } catch (e) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Login failed")));
+          .showSnackBar(const SnackBar(content: Text("Login failed, get the hell outta here")));
     }
   }
 
