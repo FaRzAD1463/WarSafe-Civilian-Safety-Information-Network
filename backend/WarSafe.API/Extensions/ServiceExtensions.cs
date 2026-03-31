@@ -12,6 +12,7 @@ public static class ServiceExtensions
         services.AddScoped<IReportService, ReportService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IMediaService, MediaService>();
+        services.AddScoped<IAiService, AiService>();
         services.AddScoped<IAlertService, AlertService>();
         services.AddScoped<IShelterService, ShelterService>();
     }
