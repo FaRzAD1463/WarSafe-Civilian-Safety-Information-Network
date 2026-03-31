@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WarSafe.Application.Interfaces;
 
 [ApiController]
 [Route("api/auth")]
